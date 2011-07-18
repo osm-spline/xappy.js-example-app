@@ -1,1 +1,3 @@
 Map Exaample using the OpenLayers-Libary to test the xappy.js and other Xapi's.
+
+If you don't host the map on the xapi-server, you have to use proxy.cgi. It is preset for "xapi.spline.de".
