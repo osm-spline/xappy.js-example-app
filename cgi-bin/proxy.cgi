@@ -15,7 +15,7 @@ import sys, os
 
 # Designed to prevent Open Proxy type stuff.
 
-allowedHosts = ['fsi.spline.de','xapi.spline.de','open.mapquestapi.com']
+allowedHosts = ['xapi.spline.de']
 
 method = os.environ["REQUEST_METHOD"]
 
