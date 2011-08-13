@@ -3,9 +3,20 @@ xapi sample application
 
 This example uses the OpenLayers-Library to test xapi implementations.
 
-If you don't host this application on a xapi-server, you have to use
-a proxy.
+Requirements
+============
 
-An proxy server written in python is included.
-It is preset for "xapi.spline.de".
+You need to have an xapi server on this server at `/api`
 
+Proxy a xapi instance with nginx
+--------------------------------
+
+    server {
+      listen          80;
+      server_name     $SERVER_NAME;
+      root            $WEB_ROOT;
+
+      location /api {
+        proxy_pass http://open.mapquestapi.com/xapi/api;
+      }
+    }
