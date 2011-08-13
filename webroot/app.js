@@ -1,14 +1,19 @@
-var createUrl = function(bbox) {
-    // transform from WGS 1984
-    // to Spherical Mercator Projection
-    bbox = bbox.transform(
-        new OpenLayers.Projection("EPSG:900913"),
-        new OpenLayers.Projection("EPSG:4326"));
-        var url = "api/0.6/node[amenity=pub][bbox=" +
-        bbox.left + "," + bbox.bottom + "," + bbox.right + "," + bbox.top + "]";
+var createUrl = function(extent) {
+    var bbox = extentToBbox(extent);
+    var url = "api/0.6/node[amenity=pub][bbox=" +
+      bbox.left + "," + bbox.bottom + "," + bbox.right + "," + bbox.top + "]";
         console.log(url);
         return url;
-}
+};
+
+// transform from WGS 1984 to Spherical Mercator Projection
+var extentToBbox = function(extent) {
+    return extent.transform(
+        new OpenLayers.Projection("EPSG:900913"),
+        new OpenLayers.Projection("EPSG:4326")
+    );
+};
+
 
 var createLayer = function(extent, name) {
     var layer = new OpenLayers.Layer.Vector(name, {
