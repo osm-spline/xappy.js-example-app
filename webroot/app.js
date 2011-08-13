@@ -1,11 +1,10 @@
 var createUrl = function(bbox) {
-    var server = "http://dalino.spline.de/cgi-bin/proxy.cgi?url=http://xapi.spline.de/api/0.6/";
     // transform from WGS 1984
     // to Spherical Mercator Projection
     bbox = bbox.transform(
         new OpenLayers.Projection("EPSG:900913"),
         new OpenLayers.Projection("EPSG:4326"));
-        var url = server + "node[amenity=pub][bbox=" +
+        var url = "api/0.6/node[amenity=pub][bbox=" +
         bbox.left + "," + bbox.bottom + "," + bbox.right + "," + bbox.top + "]";
         console.log(url);
         return url;
