@@ -1,107 +1,70 @@
 <html>
-  <head>
-    <title>xappy.js - app examle</title>
-    <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-    <script src="http://openstreetmap.org/openlayers/OpenStreetMap.js"></script>
-    <script type="text/javascript">
-    var createUrl = function(bbox) {
-	bbox = bbox.transform(
-				new OpenLayers.Projection("EPSG:900913"), // transform from WGS 1984
-				new OpenLayers.Projection("EPSG:4326")); // to Spherical Mercator Projection
-	var url = "http://dalino.spline.de/cgi-bin/proxy.cgi?url=http://xapi.spline.de/api/0.6/node[amenity=pub][bbox=" + 
-			bbox.left + "," + bbox.bottom + "," + bbox.right + "," + bbox.top + "]";
-	console.log(url);
-	return url;
-	}
+    <head>
+        <title>xappy.js - app examle</title>
+        <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+        <script src="http://openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+        <script type="text/javascript">
+            var createUrl = function(bbox) {
+                bbox = bbox.transform(
+                        new OpenLayers.Projection("EPSG:900913"), // transform from WGS 1984
+                        new OpenLayers.Projection("EPSG:4326")); // to Spherical Mercator Projection
+                var url = "http://dalino.spline.de/cgi-bin/proxy.cgi?url=http://xapi.spline.de/api/0.6/node[amenity=pub][bbox=" +
+                    bbox.left + "," + bbox.bottom + "," + bbox.right + "," + bbox.top + "]";
+                console.log(url);
+                return url;
+            }
 
-    var createLayer = function(extent, name) {	
-	var layer = new OpenLayers.Layer.Vector(name, {
-	    strategies: [new OpenLayers.Strategy.Fixed()],
-	    protocol: new OpenLayers.Protocol.HTTP({
-		url: createUrl(extent),
-		format: new OpenLayers.Format.OSM()
-	    }),
-	    projection: new OpenLayers.Projection("EPSG:4326")
-	});
-	return layer;
-    }
+var createLayer = function(extent, name) {
+    var layer = new OpenLayers.Layer.Vector(name, {
+strategies: [new OpenLayers.Strategy.Fixed()],
+protocol: new OpenLayers.Protocol.HTTP({
+url: createUrl(extent),
+format: new OpenLayers.Format.OSM()
+}),
+projection: new OpenLayers.Projection("EPSG:4326")
+});
+return layer;
+}
 
-    var map;
-    function init(){
+var map;
+function init(){
 
-        map = new OpenLayers.Map("basicMap",{
-            controls:[
-                new OpenLayers.Control.Navigation(),
-                new OpenLayers.Control.PanZoomBar(),
-                new OpenLayers.Control.LayerSwitcher(),
-                new OpenLayers.Control.Attribution()],
-            maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
-            maxResolution: 156543.0399,
-            units: 'm'
-		
+    map = new OpenLayers.Map("basicMap",{
+controls:[
+new OpenLayers.Control.Navigation(),
+new OpenLayers.Control.PanZoomBar(),
+new OpenLayers.Control.LayerSwitcher(),
+new OpenLayers.Control.Attribution()],
+maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
+maxResolution: 156543.0399,
+units: 'm'
 
-        } );
-	map.events.on({"moveend": function(event){
-		var layer = map.getLayersByName("Kneipen")[0];
-		if(layer) {
-			map.removeLayer(layer);
-			map.addLayer(createLayer(map.getExtent(),"Kneipen"));
-		}
-		//console.log(layer);
-		//layer.options.protocol.url = "";
-	} });
-	// add maps
-	var mapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
-        map.addLayers([mapnik]);
-	
-	// set startpoint
-	var lonLat = new OpenLayers.LonLat(13.30,52.455)
-	    .transform(
-		new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-		new OpenLayers.Projection("EPSG:900913")); // to Spherical Mercator Projection
-		
-        map.setCenter(lonLat,15);		
-	
+} );
+map.events.on({"moveend": function(event){
+        var layer = map.getLayersByName("Kneipen")[0];
+        if(layer) {
+        map.removeLayer(layer);
+        map.addLayer(createLayer(map.getExtent(),"Kneipen"));
+        }
+        } });
+// add maps
+var mapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
+map.addLayers([mapnik]);
 
-	/*____Prototype___________________
+// set startpoint
+// transform from WGS 1984
+// to Spherical Mercator Projection
+var lonLat = new OpenLayers.LonLat(13.30,52.455)
+    .transform(
+            new OpenLayers.Projection("EPSG:4326"),
+            new OpenLayers.Projection("EPSG:900913"));
 
-	var iceCreamLayer = new OpenLayers.Layer.Vector("ice cream", {
-	    strategies: [new OpenLayers.Strategy.Fixed()],
-	    protocol: new OpenLayers.Protocol.HTTP({
-		//url: "http://fsi.spline.de/osm/ice_cream.osm",
-		//url: "http://dalino.spline.de/cgi-bin/proxy.cgi?url=http://fsi.spline.de/osm/ice_cream.osm",
-		//url: "http://dalino.spline.de/cgi-bin/proxy.cgi?url=http://xapi.spline.de/api/0.6/node%5Bamenity=pub%5D%5Bbbox=13.221930785674177,52.43198882000022,13.359259887231195,52.47906174233904%5D",
-		//url: "http://dalino.spline.de/cgi-bin/proxy.cgi?url=http://xapi.spline.de/api/0.6/node[amenity=pub]",
-		url: "http://dalino.spline.de/cgi-bin/proxy.cgi?url=http://open.mapquestapi.com/xapi/api/0.6/node%5Bamenity=pub%5D%5Bbbox=13.221930785674177,52.43198882000022,13.359259887231195,52.47906174233904%5D",
-   	 	format: new OpenLayers.Format.OSM()
-	    }),
-	    projection: new OpenLayers.Projection("EPSG:4326")
-	});
-
-	  */
-
-	// Layer 
-
-	map.addLayer(createLayer(map.getExtent(),"Kneipen"));	
-
-
-
-
-	
-
-	
-	
-	
-						    
-
-
-    }
-    </script>
-
-    
+map.setCenter(lonLat,15);
+map.addLayer(createLayer(map.getExtent(),"Kneipen"));
+}
+</script>
   </head>
   <body onload="init();">
-    <div id="basicMap"></div>
+      <div id="basicMap"></div>
   </body>
-  
 </html>
