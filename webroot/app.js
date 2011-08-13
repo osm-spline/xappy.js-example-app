@@ -29,7 +29,7 @@ var createLayer = function(extent, name) {
 var map;
 function init(){
 
-    map = new OpenLayers.Map("basicMap",{
+    map = new OpenLayers.Map("map",{
         controls:[
             new OpenLayers.Control.Navigation(),
             new OpenLayers.Control.PanZoomBar(),
