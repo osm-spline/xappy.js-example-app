@@ -1,9 +1,8 @@
 var createUrl = function(extent) {
     var bbox = extentToBbox(extent);
-    var url = "api/0.6/node[amenity=pub][bbox=" +
-      bbox.left + "," + bbox.bottom + "," + bbox.right + "," + bbox.top + "]";
-        console.log(url);
-        return url;
+    var path = 'api/0.6/';
+    return path + "node[amenity=pub][bbox=" + bbox.left + "," +
+        bbox.bottom + "," + bbox.right + "," + bbox.top + "]";
 };
 
 // transform from WGS 1984 to Spherical Mercator Projection
@@ -36,10 +35,14 @@ function init(){
             new OpenLayers.Control.PanZoomBar(),
             new OpenLayers.Control.LayerSwitcher(),
             new OpenLayers.Control.Attribution()],
-            maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
+            maxExtent: new OpenLayers.Bounds(
+                -20037508.34,
+                -20037508.34,
+                20037508.34,
+                20037508.34
+            ),
             maxResolution: 156543.0399,
             units: 'm'
-
     } );
     map.events.on({"moveend": function(event){
         var layer = map.getLayersByName("Kneipen")[0];
