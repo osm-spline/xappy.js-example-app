@@ -24,34 +24,33 @@ var createLayer = function(extent, name) {
         projection: new OpenLayers.Projection("EPSG:4326")
     });
     return layer;
-}
+};
 
 var map;
-function init(){
-
-    map = new OpenLayers.Map("map",{
+function init() {
+    map = new OpenLayers.Map("map", {
         controls:[
             new OpenLayers.Control.Navigation(),
             new OpenLayers.Control.PanZoomBar(),
-            new OpenLayers.Control.LayerSwitcher(),
-            new OpenLayers.Control.Attribution()],
-            maxExtent: new OpenLayers.Bounds(
-                -20037508.34,
-                -20037508.34,
-                20037508.34,
-                20037508.34
-            ),
-            maxResolution: 156543.0399,
-            units: 'm'
-    } );
-    map.events.on({"moveend": function(event){
+        ],
+        maxExtent: new OpenLayers.Bounds(
+            -20037508.34,
+            -20037508.34,
+            20037508.34,
+            20037508.34
+        ),
+        maxResolution: 156543.0399,
+        units: 'm'
+    });
+
+    var updateLayer = function(event) {
         var layer = map.getLayersByName("Kneipen")[0];
         if(layer) {
             map.removeLayer(layer);
             map.addLayer(createLayer(map.getExtent(),"Kneipen"));
         }
-    } });
-    // add maps
+    };
+    map.events.on({"moveend": updateLayer});
     var mapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
     map.addLayers([mapnik]);
 
