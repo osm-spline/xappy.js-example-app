@@ -13,7 +13,6 @@ var extentToBbox = function(extent) {
     );
 };
 
-
 var createLayer = function(extent, name) {
     var layer = new OpenLayers.Layer.Vector(name, {
         strategies: [new OpenLayers.Strategy.Fixed()],
@@ -57,7 +56,7 @@ function init() {
     // set startpoint
     // transform from WGS 1984
     // to Spherical Mercator Projection
-    var lonLat = new OpenLayers.LonLat(13.30,52.455)
+    var lonLatDahlem = new OpenLayers.LonLat(13.30,52.455)
     .transform(
         new OpenLayers.Projection("EPSG:4326"),
         new OpenLayers.Projection("EPSG:900913"));
