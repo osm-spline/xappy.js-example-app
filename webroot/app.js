@@ -59,8 +59,9 @@ function init() {
     var lonLatDahlem = new OpenLayers.LonLat(13.30,52.455)
     .transform(
         new OpenLayers.Projection("EPSG:4326"),
-        new OpenLayers.Projection("EPSG:900913"));
+        new OpenLayers.Projection("EPSG:900913")
+    );
 
-        map.setCenter(lonLat,15);
-        map.addLayer(createLayer(map.getExtent(),"Kneipen"));
+    map.setCenter(lonLatDahlem,15);
+    map.addLayer(createLayer(map.getExtent(),"Kneipen"));
 }
